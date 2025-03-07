@@ -80,7 +80,7 @@ class Human extends Player {
     }
 
     public boolean wantsToRoll(int score, int handScore, ArrayList<Integer> otherScores, int winningScore) {
-        System.out.println("HandScore is " + super.getHandScore() + ". Do you want to roll? (y/n)");
+        System.out.println("HandScore is " + handScore + ". Do you want to roll? (y/n)");
         String answer = sc.nextLine().toLowerCase();
         return answer.equals("y");
     }
