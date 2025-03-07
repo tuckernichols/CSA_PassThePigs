@@ -12,7 +12,7 @@ class Player {
     }
 
     // place holder function
-    public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore) {
+    public boolean wantsToRoll(int score, int handScore, ArrayList<Integer> otherScores, int winningScore) {
         return true;
     }
 
@@ -79,7 +79,7 @@ class Human extends Player {
         this.sc = scanner;
     }
 
-    public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore) {
+    public boolean wantsToRoll(int score, int handScore, ArrayList<Integer> otherScores, int winningScore) {
         System.out.println("HandScore is " + super.getHandScore() + ". Do you want to roll? (y/n)");
         String answer = sc.nextLine().toLowerCase();
         return answer.equals("y");
@@ -94,8 +94,8 @@ class GamblerBot extends Player {
         super("GamblerBot");
     }
 
-    public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore) {
-        return this.getHandScore() <= winningScore / 3; // Roll while hand score is <= 1/3 of the winning score
+    public boolean wantsToRoll(int score, int handScore, ArrayList<Integer> otherScores, int winningScore) {
+        return handScore <= winningScore / 3; // Roll while hand score is <= 1/3 of the winning score
     }
 }
 
@@ -107,8 +107,8 @@ class SafeBot extends Player {
         super("SafeBot");
     }
 
-    public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore) {
-        return this.getHandScore() <= winningScore / 6; // Roll while hand score is <= 1/6 of the winning score
+    public boolean wantsToRoll(int score, int handScore, ArrayList<Integer> otherScores, int winningScore) {
+        return handScore <= winningScore / 6; // Roll while hand score is <= 1/6 of the winning score
     }
 }
 
@@ -121,7 +121,7 @@ class ChatGPT extends Player {
         super("ChatGPT");
     }
 
-    public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore){
+    public boolean wantsToRoll(int score, int handScore, ArrayList<Integer> otherScores, int winningScore){
         int maxOpponentScore = otherScores.get(0);
 
         for(Integer points: otherScores){
@@ -133,19 +133,19 @@ class ChatGPT extends Player {
         if (maxOpponentScore >= winningScore - 15) {
             handMax = 25;   // Play aggressively
         }
-        if(maxOpponentScore > this.getScore() + this.getHandScore() + 15){
+        if(maxOpponentScore > score + handScore + 15){
             handMax = 25;   // Play aggressively
         }
 
-        if(maxOpponentScore + 10 < this.getScore() + this.getHandScore()){
+        if(maxOpponentScore + 10 < score + handScore){
             handMax = 15;   // play safe if leading
         }
 
-        if(maxOpponentScore + 10 > winningScore && this.getScore() + this.getHandScore() +20 < maxOpponentScore ){
+        if(maxOpponentScore + 10 > winningScore && score + handScore +20 < maxOpponentScore ){
             handMax = 100;  // hail mary
         }
 
-        if(this.getHandScore() > handMax){
+        if(handScore > handMax){
             return false;
         } else {
             return true;

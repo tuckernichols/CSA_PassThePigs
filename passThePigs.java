@@ -21,7 +21,7 @@ class passThePigs{
                 System.out.println();
                 System.out.println(player.getName() + "'s turn");
                 scores = player.getScores(players);
-                while(player.wantsToRoll(scores, WINNINGSCORE)){
+                while(player.wantsToRoll(player.getScore(), player.getHandScore(),scores, WINNINGSCORE)){
                     roll = pigs.pigScore();
                     if(roll > 0){
                         player.addToHandScore(roll);
