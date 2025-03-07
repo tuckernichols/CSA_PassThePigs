@@ -14,8 +14,8 @@ class Player {
     public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore){
         return true;
     }
+
    
-    
     public void addToHandScore(int add){
         System.out.println(" "+ add + " points added");
         handScore += add;
@@ -60,6 +60,7 @@ class Player {
 
 class Human extends Player{
     private Scanner sc;
+    private String strategy = "Human thought";
 
     public Human(String name, Scanner scanner){
         super(name);
@@ -77,6 +78,8 @@ class Human extends Player{
 }
 
 class GamblerBot extends Player{
+    private String strategy = "roll until your hand is greated then 1/3 the winning score";
+
 
     public GamblerBot(){
         super("GamblerBot");
@@ -88,8 +91,36 @@ class GamblerBot extends Player{
             return true;
         }
     }
-
-
 }
 
+class SafeBot extends Player{
+    private String strategy = "roll until your hand is greated then 1/6 the winning score";
+
+    public SafeBot(){
+        super("SafeBot");
+    }
+    public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore){
+        if(this.getHandScore() > winningScore/6){
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+
+class ChatGPT extends Player{
+    private String strategy = "ChatGPT said the statistly best score to stop at is when hand > 20";
+
+    public ChatGPT(){
+        super("ChatGPT");
+    }
+    public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore){
+        if(this.getHandScore() > 20){
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+}
 

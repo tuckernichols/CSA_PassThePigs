@@ -5,23 +5,21 @@ class passThePigs{
     public static void main(String[] args){
         Pigs pigs = new Pigs();
         Scanner sc = new Scanner(System.in);
-        final int WINNINGSCORE = 15;
+        final int WINNINGSCORE = 100;
 
         ArrayList<Player> players = new ArrayList<Player>();
         players.add(new Human("Tucker", sc));
         players.add(new GamblerBot());
+        players.add(new SafeBot());
+        players.add(new ChatGPT());
 
-
-        
         int roll;
-        int runCount = 0;
         boolean running = true;
         while(running){
             for(Player player: players){
                 System.out.println();
                 System.out.println(player.getName() + "'s turn");
                 while(player.wantsToRoll(null, WINNINGSCORE)){
-                    
                     roll = pigs.pigScore();
                     if(roll > 0){
                         player.addToHandScore(roll);
@@ -41,11 +39,6 @@ class passThePigs{
                     break;
                 }
             }
-
-
-
-
-
 
         }
         }
