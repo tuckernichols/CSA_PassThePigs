@@ -9,28 +9,44 @@ class passThePigs{
 
         ArrayList<Player> players = new ArrayList<Player>();
         players.add(new Human("Tucker", sc));
+        players.add(new GamblerBot());
 
 
-        boolean winner = false;
+        
         int roll;
         int runCount = 0;
-        while(!winner){
+        boolean running = true;
+        while(running){
             for(Player player: players){
-                System.out.print(player.getName() + "'s turn. ");
-                if(player.wantsToRoll(null, 0)){
+                System.out.println();
+                System.out.println(player.getName() + "'s turn");
+                while(player.wantsToRoll(null, WINNINGSCORE)){
+                    
                     roll = pigs.pigScore();
-                    if(roll == 0){
-                        System.out.println(" Pig out, 0 points added");
-                        continue; // pig out
-                    } else { 
+                    if(roll > 0){
                         player.addToHandScore(roll);
-                        winner = player.isWinner(WINNINGSCORE);
+                        if(player.isWinner(WINNINGSCORE)){      // winner break first while loop
+                            break;
+                        }
+                    } else {
+                        System.out.println(" pig out");
+                        player.resetHandScore();
+                        break;
                     }
-                    System.out.println();
-                } else {        // if choose not to roll bank points
-                    player.bankScore();
+                }
+                player.bankScore();
+                if(player.isWinner(WINNINGSCORE)){      // winner break final loop
+                    System.out.println(player.getName() + " is the winner");
+                    running = false;
+                    break;
                 }
             }
+
+
+
+
+
+
+        }
         }
     }
-}

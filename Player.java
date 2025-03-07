@@ -28,6 +28,11 @@ class Player {
         handScore = 0;
     }
 
+
+    public void resetHandScore(){
+        handScore = 0;
+    }
+
     public String getName(){
         return name;
     }
@@ -69,6 +74,22 @@ class Human extends Player{
         }
         return false;
     }
+}
+
+class GamblerBot extends Player{
+
+    public GamblerBot(){
+        super("GamblerBot");
+    }
+    public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore){
+        if(this.getHandScore() > winningScore/3){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
 }
 
 
