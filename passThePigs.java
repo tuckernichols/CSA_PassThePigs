@@ -9,17 +9,19 @@ class passThePigs{
 
         ArrayList<Player> players = new ArrayList<Player>();
         players.add(new Human("Tucker", sc));
+        players.add(new ChatGPT());
         players.add(new GamblerBot());
         players.add(new SafeBot());
-        players.add(new ChatGPT());
 
+        ArrayList<Integer> scores;
         int roll;
         boolean running = true;
         while(running){
             for(Player player: players){
                 System.out.println();
                 System.out.println(player.getName() + "'s turn");
-                while(player.wantsToRoll(null, WINNINGSCORE)){
+                scores = player.getScores(players);
+                while(player.wantsToRoll(scores, WINNINGSCORE)){
                     roll = pigs.pigScore();
                     if(roll > 0){
                         player.addToHandScore(roll);

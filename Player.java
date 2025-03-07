@@ -7,15 +7,24 @@ class Player {
     private int bankedScore = 0;
     private int handScore = 0;
 
-
     public Player(String name){
         this.name = name;
     }
+
     public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore){
         return true;
     }
 
-   
+    public ArrayList<Integer> getScores(ArrayList<Player> players){
+        ArrayList<Integer> scores = new ArrayList<Integer>();
+        for(Player p: players){
+            if(p != this){
+                scores.add(p.getScore());
+            }
+        }
+        return scores;
+    }
+
     public void addToHandScore(int add){
         System.out.println(" "+ add + " points added");
         handScore += add;
@@ -27,7 +36,6 @@ class Player {
         System.out.println("score is now " + bankedScore);
         handScore = 0;
     }
-
 
     public void resetHandScore(){
         handScore = 0;
@@ -109,13 +117,36 @@ class SafeBot extends Player{
 }
 
 class ChatGPT extends Player{
-    private String strategy = "ChatGPT said the statistly best score to stop at is when hand > 20";
-
+    private String strategy = "ChatGPT said the statistically best score to stop at is when hand > 20";
+    private int handMax = 20;
     public ChatGPT(){
         super("ChatGPT");
     }
     public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore){
-        if(this.getHandScore() > 20){
+        int maxOpponentScore = otherScores.get(0);
+
+        for(Integer points: otherScores){
+            if(points > maxOpponentScore){
+                maxOpponentScore = points;
+            }
+        }
+        
+        if (maxOpponentScore >= winningScore - 15) {
+            handMax = 25;   // Play aggressively
+        }
+        if(maxOpponentScore > this.getScore() + this.getHandScore() + 15){
+            handMax = 25;   // Play aggressively
+        }
+
+        if(maxOpponentScore + 10 < this.getScore() + this.getHandScore()){
+            handMax = 15;   // play safe if leading
+        }
+
+        if(maxOpponentScore + 10 > winningScore && this.getScore() + this.getHandScore() +20 < maxOpponentScore ){
+            handMax = 100;  // hail mary
+        }
+
+        if(this.getHandScore() > handMax){
             return false;
         } else {
             return true;
