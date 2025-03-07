@@ -7,121 +7,120 @@ class Player {
     private int bankedScore = 0;
     private int handScore = 0;
 
-    public Player(String name){
+    public Player(String name) {
         this.name = name;
     }
 
-    public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore){
+    // place holder function
+    public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore) {
         return true;
     }
 
-    public ArrayList<Integer> getScores(ArrayList<Player> players){
-        ArrayList<Integer> scores = new ArrayList<Integer>();
-        for(Player p: players){
-            if(p != this){
+    // Get other players scores
+    public ArrayList<Integer> getScores(ArrayList<Player> players) {
+        ArrayList<Integer> scores = new ArrayList<>();
+        for (Player p : players) {
+            if (p != this) {
                 scores.add(p.getScore());
             }
         }
         return scores;
     }
 
-    public void addToHandScore(int add){
-        System.out.println(" "+ add + " points added");
+    // Add points to hand score
+    public void addToHandScore(int add) {
+        System.out.println(" " + add + " points added");
         handScore += add;
     }
 
-    public void bankScore(){
+    // Bank hand score 
+    public void bankScore() {
         System.out.println(name + " put " + handScore + " points in the bank");
         bankedScore += handScore;
-        System.out.println("score is now " + bankedScore);
+        System.out.println("Score is now " + bankedScore);
+        handScore = 0; 
+    }
+
+    // pig out scenario
+    public void resetHandScore() {
         handScore = 0;
     }
 
-    public void resetHandScore(){
-        handScore = 0;
-    }
-
-    public String getName(){
+    // Getters
+    public String getName() {
         return name;
     }
 
-    public int getHandScore(){
+    public int getHandScore() {
         return handScore;
     }
 
-    public int getScore(){
+    public int getScore() {
         return bankedScore;
     }
 
-    public String getStrategy(){
+    public String getStrategy() {
         return strategy;
     }
 
-    public boolean isWinner(int winningScore){
-        if(bankedScore + handScore > winningScore){
-            return true;
-        } else {
-            return false;
-        }
+    // Check if player won
+    public boolean isWinner(int winningScore) {
+        return (bankedScore + handScore) >= winningScore;
     }
 }
 
-class Human extends Player{
+// Human Player Class
+class Human extends Player {
     private Scanner sc;
     private String strategy = "Human thought";
 
-    public Human(String name, Scanner scanner){
+    public Human(String name, Scanner scanner) {
         super(name);
-        sc = scanner;
+        this.sc = scanner;
     }
 
-    public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore){
-        System.out.println("handScore is " + super.getHandScore() + ". do you want to role?");
-        String answer = sc.nextLine();
-        if(answer.equals("y")){
-            return true;
-        }
-        return false;
+    public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore) {
+        System.out.println("HandScore is " + super.getHandScore() + ". Do you want to roll? (y/n)");
+        String answer = sc.nextLine().toLowerCase();
+        return answer.equals("y");
     }
 }
 
-class GamblerBot extends Player{
-    private String strategy = "roll until your hand is greated then 1/3 the winning score";
+// Gambler Bot Class (Risky Strategy)
+class GamblerBot extends Player {
+    private String strategy = "Roll until hand > 1/3 of the winning score";
 
-
-    public GamblerBot(){
+    public GamblerBot() {
         super("GamblerBot");
     }
-    public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore){
-        if(this.getHandScore() > winningScore/3){
-            return false;
-        } else {
-            return true;
-        }
+
+    public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore) {
+        return this.getHandScore() <= winningScore / 3; // Roll while hand score is <= 1/3 of the winning score
     }
 }
 
-class SafeBot extends Player{
-    private String strategy = "roll until your hand is greated then 1/6 the winning score";
+// Safe Bot Class (Conservative Strategy)
+class SafeBot extends Player {
+    private String strategy = "Roll until hand > 1/6 of the winning score";
 
-    public SafeBot(){
+    public SafeBot() {
         super("SafeBot");
     }
-    public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore){
-        if(this.getHandScore() > winningScore/6){
-            return false;
-        } else {
-            return true;
-        }
+
+    public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore) {
+        return this.getHandScore() <= winningScore / 6; // Roll while hand score is <= 1/6 of the winning score
     }
 }
 
-class ChatGPT extends Player{
-    private String strategy = "ChatGPT said the statistically best score to stop at is when hand > 20";
-    private int handMax = 20;
-    public ChatGPT(){
+// ChatGPT Bot Class (Adaptive Strategy)
+class ChatGPT extends Player {
+    private String strategy = "strategy idea given by chatGPT";
+    private int handMax = 20; // statistically best safe point to stop
+
+    public ChatGPT() {
         super("ChatGPT");
     }
+
     public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore){
         int maxOpponentScore = otherScores.get(0);
 
@@ -151,7 +150,6 @@ class ChatGPT extends Player{
         } else {
             return true;
         }
-
     }
 }
 

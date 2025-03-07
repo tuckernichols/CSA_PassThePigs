@@ -41,7 +41,6 @@ class passThePigs{
                     break;
                 }
             }
-
-        }
         }
     }
+}

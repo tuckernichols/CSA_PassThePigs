@@ -30,7 +30,7 @@ public class Pigs {
         }     
 }
 
-    public  int pigScore(){
+    public int pigScore(){
         System.out.print("rolled ");
         double roll1 = rollPig();
         System.out.print(", ");
@@ -47,7 +47,4 @@ public class Pigs {
             return (int)(roll1 + roll2);
         }
     }  
-// razorback
-// no dot
-// 6
 }
