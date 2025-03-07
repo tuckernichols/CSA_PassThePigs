@@ -10,32 +10,33 @@ public class Pigs {
     public int rollPig(){
         double outcome =  Math.random() * 100;
         if(outcome < leaningJowler){
-            System.out.print("leaning jowler ");
+            System.out.print("leaning jowler");
             return 15;
         } else if(outcome < leaningJowler + snouter){
-            System.out.print("snouter ");
+            System.out.print("snouter");
             return 10;
         } else if(outcome < leaningJowler + snouter + trotter){
-            System.out.print("trotter ");
+            System.out.print("trotter");
             return 5;
         } else if(outcome < leaningJowler + snouter + trotter + razorback){
-            System.out.print("razorback ");
+            System.out.print("razorback");
             return 5;
         } else if(outcome < leaningJowler + snouter + trotter + razorback + noDotChance){
-            System.out.print("no dot ");
+            System.out.print("no dot");
             return 1;       // return 1 if no dot
         } else{
-            System.out.print("dot ");
+            System.out.print("dot");
             return 0;       // return 0 if dot
         }     
 }
 
     public  int pigScore(){
+        System.out.print("rolled ");
         int roll1 = rollPig();
+        System.out.print(", ");
         int roll2 = rollPig();
         
         if(roll1 + roll2 == 1){
-            System.out.print("pig out ");
             return 0;
         }
         if(roll1 + roll2 == 2 || roll1 + roll2 == 0){    // case if: one dot and one nodot

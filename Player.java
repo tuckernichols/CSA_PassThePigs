@@ -11,17 +11,20 @@ class Player {
     public Player(String name){
         this.name = name;
     }
-    public boolean wantsToRoll(int myScore, int handScore, ArrayList<Integer> otherScores, int winningScore){
+    public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore){
         return true;
     }
    
     
     public void addToHandScore(int add){
+        System.out.println(" "+ add + " points added");
         handScore += add;
     }
 
     public void bankScore(){
+        System.out.println(name + " put " + handScore + " points in the bank");
         bankedScore += handScore;
+        System.out.println("score is now " + bankedScore);
         handScore = 0;
     }
 
@@ -40,6 +43,14 @@ class Player {
     public String getStrategy(){
         return strategy;
     }
+
+    public boolean isWinner(int winningScore){
+        if(bankedScore + handScore > winningScore){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 class Human extends Player{
@@ -48,6 +59,15 @@ class Human extends Player{
     public Human(String name, Scanner scanner){
         super(name);
         sc = scanner;
+    }
+
+    public boolean wantsToRoll(ArrayList<Integer> otherScores, int winningScore){
+        System.out.println("handScore is " + super.getHandScore() + ". do you want to role?");
+        String answer = sc.nextLine();
+        if(answer.equals("y")){
+            return true;
+        }
+        return false;
     }
 }
 
